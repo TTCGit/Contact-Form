@@ -11,6 +11,15 @@ function App() {
   const [message, setMessage] = useState("");
   const [consent, setConsent] = useState(false);
 
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    queryType: "",
+    message: "",
+    consent: false,
+  });
+
   const [errors, setErrors] = useState({
     firstName: "",
     lastName: "",
@@ -72,12 +81,12 @@ function App() {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const firstNameError = validateName(firstName, "First name");
-    const lastNameError = validateName(lastName, "Last name");
-    const emailError = validateEmail(email);
-    const queryTypeError = validateQueryType(queryType);
-    const messageError = validateMessage(message);
-    const consentError = validateConsent(consent);
+    const firstNameError = validateName(formData.firstName, "First name");
+    const lastNameError = validateName(formData.lastName, "Last name");
+    const emailError = validateEmail(formData.email);
+    const queryTypeError = validateQueryType(formData.queryType);
+    const messageError = validateMessage(formData.message);
+    const consentError = validateConsent(formData.consent);
 
     if (
       firstNameError ||
@@ -101,12 +110,16 @@ function App() {
 
     setSuccessMessage("success");
 
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setQueryType("");
-    setMessage("");
-    setConsent(false);
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      queryType: "",
+      message: "",
+      consent: false,
+    });
+
+    console.log(formData);
 
     setTimeout(() => {
       setSuccessMessage("");
@@ -132,9 +145,12 @@ function App() {
               type="text"
               name="firstName"
               className="form-input"
-              value={firstName}
+              value={formData.firstName}
               onChange={(e) => {
-                setFirstName(e.target.value);
+                setFormData({
+                  ...formData,
+                  firstName: e.target.value,
+                });
                 clearError("firstName");
               }}
             />
@@ -149,10 +165,13 @@ function App() {
             <input
               type="text"
               name="lastName"
-              value={lastName}
+              value={formData.lastName}
               className="form-input"
               onChange={(e) => {
-                setLastName(e.target.value);
+                setFormData({
+                  ...formData,
+                  lastName: e.target.value,
+                });
                 clearError("lastName");
               }}
             />
@@ -169,10 +188,13 @@ function App() {
           <input
             type="email"
             name="email"
-            value={email}
+            value={formData.email}
             className="form-input"
             onChange={(e) => {
-              setEmail(e.target.value);
+              setFormData({
+                ...formData,
+                email: e.target.value,
+              });
               clearError("email");
             }}
           />
@@ -194,9 +216,12 @@ function App() {
                 name="queryType"
                 value="general"
                 className="radio-input"
-                checked={queryType === "general"}
+                checked={formData.queryType === "general"}
                 onChange={(e) => {
-                  setQueryType(e.target.value);
+                  setFormData({
+                    ...formData,
+                    queryType: e.target.value,
+                  });
                   clearError("queryType");
                 }}
               />
@@ -208,9 +233,12 @@ function App() {
                 name="queryType"
                 value="support"
                 className="radio-input"
-                checked={queryType === "support"}
+                checked={formData.queryType === "support"}
                 onChange={(e) => {
-                  setQueryType(e.target.value);
+                  setFormData({
+                    ...formData,
+                    queryType: e.target.value,
+                  });
                   clearError("queryType");
                 }}
               />
@@ -225,9 +253,12 @@ function App() {
           <textarea
             rows={5}
             className="form-textarea"
-            value={message}
+            value={formData.message}
             onChange={(e) => {
-              setMessage(e.target.value);
+              setFormData({
+                ...formData,
+                message: e.target.value,
+              });
               clearError("message");
             }}
           />
@@ -240,9 +271,12 @@ function App() {
               type="checkbox"
               className="form-checkbox"
               name="consent"
-              checked={consent}
+              checked={formData.consent}
               onChange={(e) => {
-                setConsent(e.target.checked);
+                setFormData({
+                  ...formData,
+                  consent: e.target.checked,
+                });
                 clearError("consent");
               }}
             />
